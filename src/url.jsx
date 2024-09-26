@@ -1,3 +1,3 @@
-const url = "http://localhost:3000";
+const url = "https://whatsapp-web-b9gr.onrender.com";
 
 export default url;
