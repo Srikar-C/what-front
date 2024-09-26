@@ -1,9 +1,8 @@
 import { GrEmoji } from "react-icons/gr";
-import { RiAttachment2 } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
-import EmojiPicker from "emoji-picker-react"; // Import the emoji picker
+import EmojiPicker from "emoji-picker-react";
 import url from "../../../url";
 import UploadDocs from "./UploadDocs";
 
@@ -12,7 +11,6 @@ export default function ChatType(props) {
   const [cross, setCross] = useState(false);
   const [edit, setEdit] = useState(props.det.message);
   const [cross2, setCross2] = useState(false);
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State for emoji picker visibility
   const date = new Date();
 
   useEffect(() => {
@@ -85,11 +83,10 @@ export default function ChatType(props) {
             .then((response) => {
               if (response.status === 201) {
                 return response.json();
-              } else {
-                return response.json().then((data) => {
-                  alert(data.message);
-                });
               }
+              return response.json().then((data) => {
+                return Promise.reject(data.message);
+              });
             })
             .then((data) => {
               setMsg("");
@@ -97,13 +94,12 @@ export default function ChatType(props) {
             })
             .catch((err) => {
               alert(err);
-              console.log("Error in sending message: " + err);
+              console.log("ChatType.jsx->Error in sending message: " + err);
             });
-          console.log(data);
         })
         .catch((err) => {
           alert(err);
-          console.log("Error in checking daily: " + err);
+          console.log("ChatType.jsx->Error in checking daily: " + err);
         });
     } else {
       alert("Enter a message to send");
@@ -126,18 +122,17 @@ export default function ChatType(props) {
       .then((response) => {
         if (response.status === 201) {
           return response.json();
-        } else {
-          return response.json().then((data) => {
-            alert(data.message);
-          });
         }
+        return response.json().then((data) => {
+          return Promise.reject(data.message);
+        });
       })
       .then((data) => {
         props.onChecked();
       })
       .catch((err) => {
         alert(err);
-        console.log("Error in editing message: " + err);
+        console.log("ChatType.jsx->Error in editing message: " + err);
       });
   }
 
@@ -146,10 +141,10 @@ export default function ChatType(props) {
       <GrEmoji
         className="text-4xl font-light cursor-pointer"
         title="Add Emojies"
-        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+        onClick={() => props.setEmoji(!props.emoji)}
       />
-      {showEmojiPicker && (
-        <div className="absolute bottom-[10vh] left-3">
+      {props.emoji && (
+        <div ref={props.emojiRef} className="absolute bottom-[10vh] left-3">
           <EmojiPicker onEmojiClick={onEmojiClick} />
         </div>
       )}

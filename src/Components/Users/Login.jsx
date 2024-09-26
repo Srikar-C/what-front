@@ -43,12 +43,11 @@ export default function Login() {
           });
         })
         .then((data) => {
-          console.log("Data is: " + data);
           setPhone("");
           setPass("");
           setSpin(false);
           alert("User Exist, Successfully logged in");
-          navigate("/dashboard", {
+          navigate(`/${data.username}`, {
             state: {
               id: data.userid,
               name: data.username,
@@ -61,7 +60,7 @@ export default function Login() {
         .catch((err) => {
           setSpin(false);
           alert(err);
-          console.log("Error is: " + err);
+          console.log("Login.jsx->Error on logging: " + err);
         });
     }, 5000);
   }

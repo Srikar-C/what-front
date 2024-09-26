@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import ChatDrop from "./ChatDrop";
+import "../../../App.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import url from "../../../url";
 
 export default function DisplayChats(props) {
   const chatContainerRef = useRef(null);
-  const [head, setHead] = useState(false);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -19,39 +18,23 @@ export default function DisplayChats(props) {
     }
   }, [props.chats]);
 
-  const date = new Date();
-  const day = date.getDate();
-  const month = date.getMonth();
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const monthName = months[month];
-  const year = date.getFullYear();
-
   return (
     <div ref={chatContainerRef} className="h-[80vh] overflow-y-auto pt-1">
       {props.chats?.map((item) => {
         if (item.message.substring(0, 5) === "date:") {
           return (
-            <div className="flex justify-center items-center w-full">
-              <div className="border-2 border-black rounded-xl justify-center bg-blue-400 p-2">
+            <div
+              className="flex justify-center items-center w-full"
+              key={item.id}
+            >
+              <div
+                className={`shadow border-2 border-black rounded-xl justify-center text-[#4F200D] bg-[#FFD93D] py-1 px-3`}
+              >
                 {item.message.substring(5)}
               </div>
             </div>
           );
-        }
-        if (item.fromphone === props.uphone) {
+        } else if (item.fromphone === props.uphone) {
           return (
             <div
               key={item.id}
